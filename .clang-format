@@ -3,4 +3,4 @@ BasedOnStyle: Google
 ---
 Language: Cpp
 DerivePointerAlignment: false
-Standard: Cpp23
+Standard: c++20

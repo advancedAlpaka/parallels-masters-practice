@@ -1,30 +1,51 @@
-cmake_minimum_required(VERSION 3.30)
+cmake_minimum_required(VERSION 3.15)
+project(ParallelPractice)
+include (FetchContent)
 
-project(foo VERSION 0.1.0)
-
-set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS ON)
+set(PARLAY_NUM_THREADS 4)
 
-include(CheckCXXCompilerFlag)
-
-macro(add_cxx_compiler_flag flag)
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${flag}")
-endmacro()
-
-macro(try_cxx_compiler_flag flag var)
-  check_cxx_compiler_flag(${flag} ${var})
-  if(${var})
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${flag}")
-  endif()
-endmacro()
-
-# Debugging flags.
-if(CMAKE_BUILD_TYPE MATCHES Debug)
-  try_cxx_compiler_flag("-Og" CXX_HAS_OPTDEBUG_FLAG)
+FetchContent_Declare(parlaylib
+  GIT_REPOSITORY  https://github.com/cmuparlay/parlaylib.git
+  GIT_TAG         master
+)
+FetchContent_GetProperties(parlaylib)
+if(NOT parlaylib_POPULATED)
+  FetchContent_Populate(parlaylib)  
+  add_subdirectory(${parlaylib_SOURCE_DIR} EXCLUDE_FROM_ALL)
 endif()
 
-enable_testing()
+FetchContent_Declare(
+  googletest
+  URL https://github.com/google/googletest/archive/refs/tags/v1.15.2.zip
+)
+FetchContent_MakeAvailable(
+  googletest
+)
 
-add_subdirectory(src)
-add_subdirectory(tests EXCLUDE_FROM_ALL)
-add_subdirectory(benchmarks EXCLUDE_FROM_ALL)
+FetchContent_Declare(
+  benchmark
+  URL https://github.com/google/benchmark/archive/refs/tags/v1.9.1.zip
+)
+FetchContent_MakeAvailable(
+  benchmark
+)
+
+add_executable(benchmarks
+  benchmarks/bench.cpp
+  src/algo.h
+  src/par_algo.cpp
+  src/seq_algo.cpp
+)
+
+add_executable(main
+  src/main.cpp
+  src/algo.h
+  src/par_algo.cpp
+  src/seq_algo.cpp
+)
+
+target_link_libraries(benchmarks PRIVATE parlay benchmark::benchmark)
+target_link_libraries(main PRIVATE parlay)

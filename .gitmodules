@@ -1,9 +1,0 @@
-[submodule "tests/doctest"]
-	path = tests/doctest
-	url = https://github.com/onqtam/doctest.git
-[submodule "benchmarks/benchmark"]
-	path = benchmarks/benchmark
-	url = https://github.com/google/benchmark.git
-[submodule "src/parlaylib"]
-	path = src/parlaylib
-	url = https://github.com/cmuparlay/parlaylib.git
