@@ -21,6 +21,7 @@ template <typename T>
 void parallel_quicksort(parlay::sequence<T>& arr) {
     if (arr.size() <= 1) return;
 
+    size_t prev_size = arr.size();
     T pivot = arr[arr.size() / 2];
 
     auto [less, greater] = partition(arr, pivot);
@@ -32,6 +33,7 @@ void parallel_quicksort(parlay::sequence<T>& arr) {
 
     arr.clear();
     arr.insert(arr.end(), less.begin(), less.end());
+    arr.insert(arr.end(), prev_size - less.size() - greater.size(), pivot);
     arr.insert(arr.end(), greater.begin(), greater.end());
 }
 
