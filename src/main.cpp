@@ -5,9 +5,14 @@
 
 int main() {
   std::cout << "Hello World!" << std::endl;
-  parlay::sequence<long> ex{1, 5, 43, 4, 6, 8, 3, 4, 5, 7, 89, 54, 3, 5, 79};
-  auto a = ParAlgo();
-  a.quicksort(ex);
-  for (auto el : ex) std::cout << el << " ";
-  std::cout << std::endl;
+  auto a1 = ParAlgo();
+    parlay::sequence<long> ex1 = a1.createTestVec(100000000);
+  a1.quicksort(ex1);
+  //for (auto el : ex1) std::cout << el << " ";
+  //std::cout << std::endl;
+  auto a2 = SeqAlgo();
+    std::vector<long> ex2 = a2.createTestVec(100000000);
+  a2.quicksort(ex2);
+  //for (auto el : ex2) std::cout << el << " ";
+  //std::cout << std::endl;
 }

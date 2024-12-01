@@ -22,7 +22,7 @@ BENCHMARK_TEMPLATE_DEFINE_F(QuicksortFixture, SeqQuicksortTest, SeqAlgo)
   }
 };
 
-BENCHMARK_REGISTER_F(QuicksortFixture, SeqQuicksortTest)->Repetitions(5)->Threads(1);
+BENCHMARK_REGISTER_F(QuicksortFixture, SeqQuicksortTest)->Repetitions(5);
 
 BENCHMARK_TEMPLATE_DEFINE_F(QuicksortFixture, ParQuicksortTest, ParAlgo)
 (benchmark::State& st) {
@@ -31,6 +31,6 @@ BENCHMARK_TEMPLATE_DEFINE_F(QuicksortFixture, ParQuicksortTest, ParAlgo)
   }
 };
 
-BENCHMARK_REGISTER_F(QuicksortFixture, ParQuicksortTest)->Repetitions(5)->Threads(4);
+BENCHMARK_REGISTER_F(QuicksortFixture, ParQuicksortTest)->Repetitions(5);
 
 BENCHMARK_MAIN();
