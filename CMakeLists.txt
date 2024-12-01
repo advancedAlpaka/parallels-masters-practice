@@ -7,6 +7,11 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS ON)
 set(PARLAY_NUM_THREADS 4)
 
+#set(CMAKE_BUILD_TYPE Debug)
+
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g -O0")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g")
+
 FetchContent_Declare(parlaylib
   GIT_REPOSITORY  https://github.com/cmuparlay/parlaylib.git
   GIT_TAG         master

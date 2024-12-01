@@ -9,7 +9,7 @@ class QuicksortFixture : public benchmark::Fixture {
 
  public:
   void SetUp(::benchmark::State& state) { 
-    v = algo.createTestVec(100000000);    
+    v = algo.createTestVec(100000000);
   }
 
   void TearDown(::benchmark::State& state) {}

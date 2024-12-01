@@ -32,26 +32,25 @@ struct ParAlgo : Algo<ParVec, ParGr> {
   void quicksort(ParVec& v);
 };
 
-template <typename Iterator>  //  [              )
+template <typename Iterator>
 Iterator partition(Iterator first, Iterator last) {
-  auto middle = *(first + (last - first - 1) / 2);
   Iterator i = first;
-  Iterator j = last - 1;
-
-  while (true) {
-    while (*i < middle) ++i;
-    while (*j > middle) --j;
-    if (i >= j) break;
-    std::iter_swap(i++, j--);
+  Iterator j = last-1;
+  auto pivot = *(i + (j - i) / 2);
+  while(i <= j) {
+    while(*i < pivot) i++;
+    while(pivot < *j) j--;
+    if(i >= j) break;
+    std::iter_swap( i++,j--);
   }
   return j;
 }
 
 template <typename Iterator>
 void _quicksort(Iterator first, Iterator last) {
-  if (first < last - 1) {
+  if (last - first > 1) {
     Iterator q = partition(first, last);
     _quicksort(first, q);
-    _quicksort(q, last);
+    _quicksort(q+1, last);
   }
 }
