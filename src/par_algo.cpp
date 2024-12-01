@@ -23,7 +23,6 @@ void parallel_quicksort(parlay::sequence<T>& arr) {
 
     T pivot = arr[arr.size() / 2];
 
-    // Partition the sequence
     auto [less, greater] = partition(arr, pivot);
 
     parlay::par_do(
