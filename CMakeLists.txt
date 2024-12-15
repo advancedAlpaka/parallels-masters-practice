@@ -18,7 +18,7 @@ FetchContent_Declare(parlaylib
 )
 FetchContent_GetProperties(parlaylib)
 if(NOT parlaylib_POPULATED)
-  FetchContent_Populate(parlaylib)  
+  FetchContent_Populate(parlaylib)
   add_subdirectory(${parlaylib_SOURCE_DIR} EXCLUDE_FROM_ALL)
 endif()
 
@@ -52,5 +52,13 @@ add_executable(main
   src/seq_algo.cpp
 )
 
+add_executable(test
+  tests/test.cpp
+  src/algo.h
+  src/par_algo.cpp
+  src/seq_algo.cpp
+)
+
 target_link_libraries(benchmarks PRIVATE parlay benchmark::benchmark)
 target_link_libraries(main PRIVATE parlay)
+target_link_libraries(test PRIVATE parlay GTest::gtest_main)

@@ -4,7 +4,7 @@
 #include "algo.h"
 
 int main() {
-  std::cout << "Hello World!" << std::endl;
+  /*std::cout << "Hello World!" << std::endl;
   auto a2 = SeqAlgo();
   std::cout << "Hello World!" << std::endl;
   std::vector<long> ex2 = a2.createTestVec(100);
@@ -12,7 +12,7 @@ int main() {
   for (auto el : ex2) std::cout << el << " ";
   std::cout << std::endl;
   a2.quicksort(ex2);
-  /*std::cout << "Hello World!" << std::endl;
+  std::cout << "Hello World!" << std::endl;
   auto a1 = ParAlgo();
   std::cout << "Hello World!" << std::endl;
   parlay::sequence<long> ex1 = a1.createTestVec(100);
