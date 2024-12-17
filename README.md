@@ -8,40 +8,6 @@
 
 Присылать письмо на почту с темой "CW1. <ФИО>".
 
-Unable to determine clock rate from sysctl: hw.cpufrequency: No such file or directory
-This does not affect benchmark measurements, only the metadata output.
-***WARNING*** Failed to set thread affinity. Estimated CPU frequency may be incorrect.
-2024-12-02T00:18:01+03:00
-Running /Users/moskvichevv2/C++ projects/parallel-practice/build/benchmarks
-Run on (12 X 24 MHz CPU s)
-CPU Caches:
-  L1 Data 64 KiB
-  L1 Instruction 128 KiB
-  L2 Unified 4096 KiB (x12)
-Load Average: 2.93, 2.69, 2.71
-------------------------------------------------------------------------------------------------------
-Benchmark                                                            Time             CPU   Iterations
-------------------------------------------------------------------------------------------------------
-QuicksortFixture<SeqAlgo>/SeqQuicksortTest/repeats:5        5894792875 ns   5893800000 ns            1
-QuicksortFixture<SeqAlgo>/SeqQuicksortTest/repeats:5        5844059334 ns   5843819000 ns            1
-QuicksortFixture<SeqAlgo>/SeqQuicksortTest/repeats:5        5947158958 ns   5937879000 ns            1
-QuicksortFixture<SeqAlgo>/SeqQuicksortTest/repeats:5        5949460584 ns   5891203000 ns            1
-QuicksortFixture<SeqAlgo>/SeqQuicksortTest/repeats:5        5869227959 ns   5869196000 ns            1
-QuicksortFixture<SeqAlgo>/SeqQuicksortTest/repeats:5_mean   5900939942 ns   5887179400 ns            5
-QuicksortFixture<SeqAlgo>/SeqQuicksortTest/repeats:5_median 5894792875 ns   5891203000 ns            5
-QuicksortFixture<SeqAlgo>/SeqQuicksortTest/repeats:5_stddev   46822244 ns     34763480 ns            5
-QuicksortFixture<SeqAlgo>/SeqQuicksortTest/repeats:5_cv           0.79 %          0.59 %             5
-QuicksortFixture<ParAlgo>/ParQuicksortTest/repeats:5        1376923375 ns   1173046000 ns            1
-QuicksortFixture<ParAlgo>/ParQuicksortTest/repeats:5        1328761750 ns   1239729000 ns            1
-QuicksortFixture<ParAlgo>/ParQuicksortTest/repeats:5        1274299500 ns   1167121000 ns            1
-QuicksortFixture<ParAlgo>/ParQuicksortTest/repeats:5        1326980250 ns   1265817000 ns            1
-QuicksortFixture<ParAlgo>/ParQuicksortTest/repeats:5        1316089625 ns   1258586000 ns            1
-QuicksortFixture<ParAlgo>/ParQuicksortTest/repeats:5_mean   1324610900 ns   1220859800 ns            5
-QuicksortFixture<ParAlgo>/ParQuicksortTest/repeats:5_median 1326980250 ns   1239729000 ns            5
-QuicksortFixture<ParAlgo>/ParQuicksortTest/repeats:5_stddev   36617235 ns     47366868 ns            5
-QuicksortFixture<ParAlgo>/ParQuicksortTest/repeats:5_cv           2.76 %          3.88 %             5
-
-
 Судя по бенчам, запущенным в последний момент, разрыв примерно в 4-5 раз.
 А это традиционная булочкака в домашке:
 
@@ -54,3 +20,54 @@ QuicksortFixture<ParAlgo>/ParQuicksortTest/repeats:5_cv           2.76 %        
 Нужен код на гитхабе и результаты запусков в README.md. Код, который запускает, тоже должен лежать в репо.
 
 Присылать письмо на почту с темой "CW2. <ФИО>".
+
+Unable to determine clock rate from sysctl: hw.cpufrequency: No such file or directory
+This does not affect benchmark measurements, only the metadata output.
+***WARNING*** Failed to set thread affinity. Estimated CPU frequency may be incorrect.
+2024-12-17T17:37:30+03:00
+Running /Users/moskvichevv2/C++ projects/parallel-practice/build/benchmarks
+Run on (12 X 24 MHz CPU s)
+CPU Caches:
+  L1 Data 64 KiB
+  L1 Instruction 128 KiB
+  L2 Unified 4096 KiB (x12)
+Load Average: 3.04, 2.86, 2.80
+----------------------------------------------------------------------------------------------------------------------------------------
+Benchmark                                                                              Time             CPU   Iterations UserCounters...
+----------------------------------------------------------------------------------------------------------------------------------------
+QuicksortFixture<SeqAlgo>/SeqQuicksortTest/repeats:5                          5818396000 ns   5803050000 ns            1 PARLAY_NUM_THREADS=4
+QuicksortFixture<SeqAlgo>/SeqQuicksortTest/repeats:5                          5886361541 ns   5877226000 ns            1 PARLAY_NUM_THREADS=4
+QuicksortFixture<SeqAlgo>/SeqQuicksortTest/repeats:5                          5904583584 ns   5885906000 ns            1 PARLAY_NUM_THREADS=4
+QuicksortFixture<SeqAlgo>/SeqQuicksortTest/repeats:5                          5832444417 ns   5831738000 ns            1 PARLAY_NUM_THREADS=4
+QuicksortFixture<SeqAlgo>/SeqQuicksortTest/repeats:5                          5779963834 ns   5772766000 ns            1 PARLAY_NUM_THREADS=4
+QuicksortFixture<SeqAlgo>/SeqQuicksortTest/repeats:5_mean                     5844349875 ns   5834137200 ns            5 PARLAY_NUM_THREADS=4
+QuicksortFixture<SeqAlgo>/SeqQuicksortTest/repeats:5_median                   5832444417 ns   5831738000 ns            5 PARLAY_NUM_THREADS=4
+QuicksortFixture<SeqAlgo>/SeqQuicksortTest/repeats:5_stddev                     50877268 ns     48154044 ns            5 PARLAY_NUM_THREADS=0
+QuicksortFixture<SeqAlgo>/SeqQuicksortTest/repeats:5_cv                             0.87 %          0.83 %             5 PARLAY_NUM_THREADS=0.00%
+QuicksortFixture<ParAlgo>/ParQuicksortTest/repeats:5                          1089016709 ns    940666000 ns            1 PARLAY_NUM_THREADS=4
+QuicksortFixture<ParAlgo>/ParQuicksortTest/repeats:5                           814558209 ns    791085000 ns            1 PARLAY_NUM_THREADS=4
+QuicksortFixture<ParAlgo>/ParQuicksortTest/repeats:5                           867072875 ns    843281000 ns            1 PARLAY_NUM_THREADS=4
+QuicksortFixture<ParAlgo>/ParQuicksortTest/repeats:5                           957099958 ns    934103000 ns            1 PARLAY_NUM_THREADS=4
+QuicksortFixture<ParAlgo>/ParQuicksortTest/repeats:5                           958883792 ns    934464000 ns            1 PARLAY_NUM_THREADS=4
+QuicksortFixture<ParAlgo>/ParQuicksortTest/repeats:5_mean                      937326309 ns    888719800 ns            5 PARLAY_NUM_THREADS=4
+QuicksortFixture<ParAlgo>/ParQuicksortTest/repeats:5_median                    957099958 ns    934103000 ns            5 PARLAY_NUM_THREADS=4
+QuicksortFixture<ParAlgo>/ParQuicksortTest/repeats:5_stddev                    104729713 ns     67911363 ns            5 PARLAY_NUM_THREADS=0
+QuicksortFixture<ParAlgo>/ParQuicksortTest/repeats:5_cv                            11.17 %          7.64 %             5 PARLAY_NUM_THREADS=0.00%
+BreadthFirstSearchFixture<SeqAlgo>/SeqBreadthFirstSearchTest/repeats:5        3275239500 ns   3056180000 ns            1 PARLAY_NUM_THREADS=4
+BreadthFirstSearchFixture<SeqAlgo>/SeqBreadthFirstSearchTest/repeats:5        2890298542 ns   2887160000 ns            1 PARLAY_NUM_THREADS=4
+BreadthFirstSearchFixture<SeqAlgo>/SeqBreadthFirstSearchTest/repeats:5        2903163584 ns   2896661000 ns            1 PARLAY_NUM_THREADS=4
+BreadthFirstSearchFixture<SeqAlgo>/SeqBreadthFirstSearchTest/repeats:5        2921548084 ns   2907546000 ns            1 PARLAY_NUM_THREADS=4
+BreadthFirstSearchFixture<SeqAlgo>/SeqBreadthFirstSearchTest/repeats:5        3039745708 ns   2991720000 ns            1 PARLAY_NUM_THREADS=4
+BreadthFirstSearchFixture<SeqAlgo>/SeqBreadthFirstSearchTest/repeats:5_mean   3005999084 ns   2947853400 ns            5 PARLAY_NUM_THREADS=4
+BreadthFirstSearchFixture<SeqAlgo>/SeqBreadthFirstSearchTest/repeats:5_median 2921548084 ns   2907546000 ns            5 PARLAY_NUM_THREADS=4
+BreadthFirstSearchFixture<SeqAlgo>/SeqBreadthFirstSearchTest/repeats:5_stddev  161804638 ns     73464223 ns            5 PARLAY_NUM_THREADS=0
+BreadthFirstSearchFixture<SeqAlgo>/SeqBreadthFirstSearchTest/repeats:5_cv           5.38 %          2.49 %             5 PARLAY_NUM_THREADS=0.00%
+BreadthFirstSearchFixture<ParAlgo>/ParBreadthFirstSearchTest/repeats:5        2727543042 ns   2670916000 ns            1 PARLAY_NUM_THREADS=4
+BreadthFirstSearchFixture<ParAlgo>/ParBreadthFirstSearchTest/repeats:5        2749808916 ns   2720024000 ns            1 PARLAY_NUM_THREADS=4
+BreadthFirstSearchFixture<ParAlgo>/ParBreadthFirstSearchTest/repeats:5        2816677042 ns   2762475000 ns            1 PARLAY_NUM_THREADS=4
+BreadthFirstSearchFixture<ParAlgo>/ParBreadthFirstSearchTest/repeats:5        2849736875 ns   2817734000 ns            1 PARLAY_NUM_THREADS=4
+BreadthFirstSearchFixture<ParAlgo>/ParBreadthFirstSearchTest/repeats:5        2826667667 ns   2801053000 ns            1 PARLAY_NUM_THREADS=4
+BreadthFirstSearchFixture<ParAlgo>/ParBreadthFirstSearchTest/repeats:5_mean   2794086708 ns   2754440400 ns            5 PARLAY_NUM_THREADS=4
+BreadthFirstSearchFixture<ParAlgo>/ParBreadthFirstSearchTest/repeats:5_median 2816677042 ns   2762475000 ns            5 PARLAY_NUM_THREADS=4
+BreadthFirstSearchFixture<ParAlgo>/ParBreadthFirstSearchTest/repeats:5_stddev   52577004 ns     60008714 ns            5 PARLAY_NUM_THREADS=0
+BreadthFirstSearchFixture<ParAlgo>/ParBreadthFirstSearchTest/repeats:5_cv           1.88 %          2.18 %             5 PARLAY_NUM_THREADS=0.00%
