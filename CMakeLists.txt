@@ -38,6 +38,8 @@ FetchContent_MakeAvailable(
   benchmark
 )
 
+enable_testing()
+
 add_executable(benchmarks
   benchmarks/bench.cpp
   src/algo.h
@@ -52,13 +54,17 @@ add_executable(main
   src/seq_algo.cpp
 )
 
-add_executable(test
+add_executable(my_tests
   tests/test.cpp
   src/algo.h
   src/par_algo.cpp
   src/seq_algo.cpp
 )
 
+
 target_link_libraries(benchmarks PRIVATE parlay benchmark::benchmark)
 target_link_libraries(main PRIVATE parlay)
-target_link_libraries(test PRIVATE parlay GTest::gtest_main)
+target_link_libraries(my_tests PRIVATE parlay GTest::gtest_main)
+
+include(GoogleTest)
+gtest_discover_tests(my_tests)
