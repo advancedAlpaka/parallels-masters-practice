@@ -1,3 +1,4 @@
+#include <__atomic/aliases.h>
 #include <__format/format_functions.h>
 #include <parlay/primitives.h>
 #include <parlay/sequence.h>
@@ -116,42 +117,38 @@ ParVec ParAlgo::createTestVec() {
 // | Breadth-first search |
 // |----------------------|
 
-ParVs ParAlgo::getNeighbors(int vertex) {
-  auto [x, y, z] = getMyCoord(vertex);
+ParNestedVs ParAlgo::createTestGraph() {
+  auto getNeighbours = [&](int vertex) {
+  auto [x, y, z] = getCoord(vertex);
   ParVs res;
   res.reserve(6);
-  if (x > 0) res.push_back(getMyNum(x - 1, y, z));
-  if (y > 0) res.push_back(getMyNum(x, y - 1, z));
-  if (z > 0) res.push_back(getMyNum(x, y, z - 1));
-  if (z < SIDE_MINUS_ONE) res.push_back(getMyNum(x, y, z + 1));
-  if (y < SIDE_MINUS_ONE) res.push_back(getMyNum(x, y + 1, z));
-  if (x < SIDE_MINUS_ONE) res.push_back(getMyNum(x + 1, y, z));
+  if (x > 0) res.push_back(getNum({x - 1, y, z}));
+  if (y > 0) res.push_back(getNum({x, y - 1, z}));
+  if (z > 0) res.push_back(getNum({x, y, z - 1}));
+  if (z < SIDE_MINUS_ONE) res.push_back(getNum({x, y, z + 1}));
+  if (y < SIDE_MINUS_ONE) res.push_back(getNum({x, y + 1, z}));
+  if (x < SIDE_MINUS_ONE) res.push_back(getNum({x + 1, y, z}));
   return res;
+  };
+
+  return parlay::tabulate(SIDE3, [&](int i){ return getNeighbours(i); });
 }
 
-ParNestedVs ParAlgo::bfs() {
-  parlay::sequence<std::atomic_bool> visited(SIDE3);
-  //      parlay::tabulate<std::atomic_bool>(125000000,
-  //                                         [](int i) { return false; });
-  visited[0].store(true);
-  parlay::sequence<ParVs> frontiers;
-  ParVs pastFrontier{0};
-  while (!pastFrontier.empty()) {
-    frontiers.push_back(pastFrontier);
-    ParVs edgesToNextFrontier = parlay::flatten(
-        parlay::map(pastFrontier, [&](int i) { return getNeighbors(i); }));
-    pastFrontier = parlay::filter(edgesToNextFrontier, [&](int i) {
-      bool expected = false;
-      return visited[i].compare_exchange_strong(expected, true);
-    });
+ParNestedVs ParAlgo::bfs(ParNestedVs gr) {
+  auto visited = parlay::tabulate<std::atomic_bool>(gr.size(), [](int i){ return i==0; }, BLOCK_SIZE);
+  ParNestedVs frontiers;
+  
+  ParVs frontier{0};
+  while(frontier.size() > 0) {
+    frontiers.push_back(frontier);
+
+    auto outEdges = parlay::flatten(parlay::map(frontier, [&](int v) { return gr[v];}));
+
+    frontier= parlay::filter(outEdges, [&](int v){ 
+      bool expect = false;
+      return (!visited[v]) && visited[v].compare_exchange_strong(expect, true);
+     });
   }
-  /*for(auto f: frontiers) {
-    for(auto v : f) {
-      auto xyz = getCoord(v);
-      std::cout << "{" << std::get<0>(xyz) << " " << std::get<1>(xyz) << " " <<
-  std::get<2>(xyz) << "} ";
-    }
-    std::cout << std::endl;
-  }*/
+
   return frontiers;
 }

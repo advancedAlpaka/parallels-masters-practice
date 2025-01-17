@@ -3,58 +3,65 @@
 
 #include <vector>
 
-const int BLOCK_SIZE = 10000;
+const int SIZE = 100000000;
 const int SMALL_BORDER = 32;
-const int BORDER =  25000000;
-const int SIZE =   100000000;
-const int PIVOTS_SELECTION_SIZE = 257;
+const int BORDER = 10000;
+const int PIVOTS_SELECTION_SIZE = 101;
 const int PIVOTS_MEDIAN = PIVOTS_SELECTION_SIZE / 2;
+const int BLOCK_SIZE = 1000;
+
 const int SIDE = 500;
 const int SIDE_MINUS_ONE = SIDE - 1;
 const int SIDE2 = SIDE * SIDE;
 const int SIDE3 = SIDE2 * SIDE;
 
-template <class Vec, class GrVertexes, class BFSGrVertexes>
+template <class Vec, class GrVertexes>
 struct Algo {
-  static int getMyNum(int x, int y, int z) { return SIDE2 * x + SIDE * y + z; };
+  using _Vxs = GrVertexes;
 
-  static std::tuple<int, int, int> getMyCoord(int num) {
+  static int getNum(std::tuple<int, int, int> xyz) { 
+    auto [x, y, z] = xyz;
+    return SIDE2 * x + SIDE * y + z; };
+
+  static std::tuple<int, int, int> getCoord(int num) {
     return {num / SIDE2, (num / SIDE) % SIDE, num % SIDE};
   }
 
   virtual Vec createTestVec() = 0;
-  virtual GrVertexes getNeighbors(int vertex) = 0;
+  virtual GrVertexes createTestGraph() = 0;
 
   virtual Vec quicksort(Vec& v) = 0;
-  virtual BFSGrVertexes bfs() = 0;
+  virtual GrVertexes bfs(GrVertexes gr) = 0;
 };
 
 using SeqVec = std::vector<long>;
 using SeqVs = std::vector<int>;
+using SeqNestedVs = std::vector<SeqVs>;
 
-struct SeqAlgo : Algo<SeqVec, SeqVs, SeqVs> {
+struct SeqAlgo : Algo<SeqVec, SeqNestedVs> {
   using Vec = SeqVec;
   std::mt19937 gen;
 
   SeqVec createTestVec();
   SeqVec quicksort(SeqVec& v);
 
-  SeqVs getNeighbors(int vertex);
-  SeqVs bfs();
+  SeqNestedVs createTestGraph();
+  SeqNestedVs bfs(SeqNestedVs gr);
 };
 
 using ParVec = parlay::sequence<long>;
 using ParVs = parlay::sequence<int>;
 using ParNestedVs = parlay::sequence<ParVs>;
 
-struct ParAlgo : Algo<ParVec, ParVs, ParNestedVs> {
+struct ParAlgo : Algo<ParVec, ParNestedVs> {
   using Vec = ParVec;
   parlay::random_generator gen;
 
   ParVec createTestVec();
   ParVec quicksort(ParVec& v);
-  ParVs getNeighbors(int vertex);
-  ParNestedVs bfs();
+  
+  ParNestedVs createTestGraph();
+  ParNestedVs bfs(ParNestedVs gr);
 };
 
 template <typename Iterator>

@@ -56,19 +56,33 @@ template <class TestingAlgo>
 class BreadthFirstSearchFixture : public benchmark::Fixture {
  protected:
   TestingAlgo algo = TestingAlgo();
-  
+  TestingAlgo::_Vxs gr, res;
+
  public:
   void SetUp(::benchmark::State& state) {
     state.counters["PARLAY_NUM_THREADS"] = std::stoi(std::getenv("PARLAY_NUM_THREADS"));
+    gr = algo.createTestGraph();
   }
 
-  void TearDown(::benchmark::State& state) {}
+  void TearDown(::benchmark::State& state) {
+    bool isGood = true;
+    for(int level = 0; level < res.size(); level++) {
+      for(int v: res[level]) {
+        auto [x, y, z] = TestingAlgo::getCoord(v);
+        isGood = (x + y + z == level);
+        if(!isGood) break;
+      }
+      if(!isGood) break;
+    }
+    res.clear();
+    gr.clear();
+  }
 };
 
 BENCHMARK_TEMPLATE_DEFINE_F(BreadthFirstSearchFixture, SeqBreadthFirstSearchTest, SeqAlgo)
 (benchmark::State& st) {
   for (auto _ : st) {
-    algo.bfs();
+    res = algo.bfs(gr);
   }
 };
 
@@ -77,7 +91,7 @@ BENCHMARK_TEMPLATE_DEFINE_F(BreadthFirstSearchFixture, SeqBreadthFirstSearchTest
 BENCHMARK_TEMPLATE_DEFINE_F(BreadthFirstSearchFixture, ParBreadthFirstSearchTest, ParAlgo)
 (benchmark::State& st) {
   for (auto _ : st) {
-    algo.bfs();
+    res = algo.bfs(gr);
   }
 };
 

@@ -5,19 +5,6 @@
 #include "parlay/internal/get_time.h"
 #include "parlay/sequence.h"
 
-const int ATTEMPTS = 5;
-
-double bench(auto algo) {
-  parlay::internal::timer t("Timer", false);
-  for(int i = 0; i < ATTEMPTS; i++) {
-    auto vec = algo.createTestVec();
-    t.start();
-    auto res = algo.sort(vec);
-  }
-  return 0.0;
-}
-
-
 int main() {
     const int RUNS = 5;
     SeqAlgo seq = SeqAlgo();
@@ -25,7 +12,7 @@ int main() {
 
     double seq_time = 0, par_time = 0;
     
-    for (int run = 0; run < RUNS; run++) {
+    /*for (int run = 0; run < RUNS; run++) {
         SeqVec seqData = seq.createTestVec();
         auto t1 = std::chrono::high_resolution_clock::now();
         auto seq_result = seq.quicksort(seqData);
@@ -43,6 +30,33 @@ int main() {
     std::cout << "Average Parallel Time: " << par_time/RUNS << "s\n";
     std::cout << "Speedup: " << seq_time/par_time << "x\n";
     
+    std::cout << "--------------BFS----------------";
+    seq_time = 0;
+    par_time = 0;
+    */
+    auto seqGr = seq.createTestGraph();
+    auto parGr = par.createTestGraph();
+
+    for (int run = 0; run < RUNS; run++) {
+        std::cout << "run " << run << " seq begin\n";
+        auto t1 = std::chrono::high_resolution_clock::now();
+        auto seq_result = seq.bfs(seqGr);
+        auto t2 = std::chrono::high_resolution_clock::now();
+        std::cout << "run " << run << " seq end\n";
+        seq_time += std::chrono::duration<double>(t2-t1).count();
+        
+        std::cout << "run " << run << " par begin\n";
+        t1 = std::chrono::high_resolution_clock::now();
+        auto par_result = par.bfs(parGr);
+        t2 = std::chrono::high_resolution_clock::now();
+        std::cout << "run " << run << " par out\n";
+        par_time += std::chrono::duration<double>(t2-t1).count();
+    }
+
+    std::cout << "Average Sequential Time: " << seq_time/RUNS << "s\n";
+    std::cout << "Average Parallel Time: " << par_time/RUNS << "s\n";
+    std::cout << "Speedup: " << seq_time/par_time << "x\n";
+
     return 0;
 
 }
