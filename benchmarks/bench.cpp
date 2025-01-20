@@ -56,7 +56,8 @@ template <class TestingAlgo>
 class BreadthFirstSearchFixture : public benchmark::Fixture {
  protected:
   TestingAlgo algo = TestingAlgo();
-  TestingAlgo::_Vxs gr, res;
+  TestingAlgo::_Vxs gr;
+  TestingAlgo::_Tree res;
 
  public:
   void SetUp(::benchmark::State& state) {
@@ -65,15 +66,7 @@ class BreadthFirstSearchFixture : public benchmark::Fixture {
   }
 
   void TearDown(::benchmark::State& state) {
-    bool isGood = true;
-    for(int level = 0; level < res.size(); level++) {
-      for(int v: res[level]) {
-        auto [x, y, z] = TestingAlgo::getCoord(v);
-        isGood = (x + y + z == level);
-        if(!isGood) break;
-      }
-      if(!isGood) break;
-    }
+    state.counters["IS_GOOD"] = algo.checkBFS(res);
     res.clear();
     gr.clear();
   }
@@ -86,7 +79,7 @@ BENCHMARK_TEMPLATE_DEFINE_F(BreadthFirstSearchFixture, SeqBreadthFirstSearchTest
   }
 };
 
-//BENCHMARK_REGISTER_F(BreadthFirstSearchFixture, SeqBreadthFirstSearchTest)->Repetitions(5);
+BENCHMARK_REGISTER_F(BreadthFirstSearchFixture, SeqBreadthFirstSearchTest)->Repetitions(5);
 
 BENCHMARK_TEMPLATE_DEFINE_F(BreadthFirstSearchFixture, ParBreadthFirstSearchTest, ParAlgo)
 (benchmark::State& st) {
@@ -95,6 +88,6 @@ BENCHMARK_TEMPLATE_DEFINE_F(BreadthFirstSearchFixture, ParBreadthFirstSearchTest
   }
 };
 
-//BENCHMARK_REGISTER_F(BreadthFirstSearchFixture, ParBreadthFirstSearchTest)->Repetitions(5);
+BENCHMARK_REGISTER_F(BreadthFirstSearchFixture, ParBreadthFirstSearchTest)->Repetitions(5);
 
 BENCHMARK_MAIN();

@@ -39,37 +39,36 @@ SeqNestedVs SeqAlgo::createTestGraph() {
   return res;
 }
 
-SeqNestedVs SeqAlgo::bfs(SeqNestedVs gr) {
-  std::vector<bool> visited(SIDE3, false);
-  SeqNestedVs res{};
-  //                 vertex level
-  std::queue<std::pair<int, int>> queue;
-  // std::vector<bool> visited(SIDE3, false);
-  // std::unordered_set<int> visited;
-
-  int maxDepth = -1;
-  visited[0] = true;
-  // visited.insert(0);
-  queue.push({0, 0});
-
-  while (!queue.empty()) {
-    int currentVertex = queue.front().first;
-    int depth = queue.front().second;
-    if(depth > maxDepth) {
-      depth++;
-      res.push_back({});
+SeqVs SeqAlgo::bfs(SeqNestedVs & gr) {
+  const int n = gr.size();
+    std::vector<int> parent(n, -1);  // -1 indicates unvisited vertex
+    std::queue<int> q;
+    
+    // Start from vertex 0
+    q.push(0);
+    parent[0] = 0;  // root is its own parent
+    
+    while (!q.empty()) {
+        int current = q.front();
+        q.pop();
+        
+        for (int neighbor : gr[current]) {
+            if (parent[neighbor] == -1) {  // if unvisited
+                parent[neighbor] = current;  // set parent
+                q.push(neighbor);
+            }
+        }
     }
-    res.back().push_back(currentVertex);
-    queue.pop();
+    
+    return parent;
+}
 
-    for (int neighbor : gr[currentVertex]) {
-      if (!visited[neighbor] /*visited.find(neighbor) == visited.end()*/) {
-        // res[neighbor] = depth + 1;
-        //visited.insert(neighbor);
-        visited[neighbor] = true;
-        queue.push({neighbor, depth + 1});
-      }
-    }
-  }
-  return res;
+bool SeqAlgo::checkBFS(SeqVs &res) {
+  return parlay::all_of(parlay::zip(parlay::iota(res.size()), res), [&](std::pair<int, int> indValue){
+    auto [v, parent] = indValue;
+    if(v == 0) return true;
+    auto [xV, yV, zV] = getCoord(v);
+    auto [xP, yP, zP] = getCoord(parent);
+    return xP + yP + zP + 1 == xV + yV + zV;
+  });
 }
